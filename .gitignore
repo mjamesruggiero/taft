@@ -1,0 +1,27 @@
+*.csv
+*.class
+*.log
+.history
+
+# sbt specific
+sbt-launch.jar
+dist/*
+target/
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
+
+# Scala-IDE specific
+.scala_dependencies
+.idea/*
+.idea_modules/*
+
+# IDEA baby!
+*.iml
+
+LOG_HOME_IS_UNDEFINED
+./lib
+newrelic
+.DS_Store
+dump.rdb

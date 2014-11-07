@@ -1,4 +1,4 @@
-package sharethrough
+package com.sharethrough
 
 import akka.actor._
 import akka.pattern.ask

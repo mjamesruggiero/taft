@@ -1,36 +1,21 @@
 package com.sharethrough
 
-import akka.actor._
-import akka.pattern.ask
-import akka.util.duration._
-import akka.util.Timeout
+import scalaz.stream._
+import scalaz.concurrent.Task
 
-case object Tick
-case object Get
+object Taft {
+  def add100(n: Double) : Double = n + 100.00
 
-class Counter extends Actor {
-  var count = 0
+  val runner: Task[Unit] = {
+    val dir = "/Users/michaelruggiero/"
 
-  def receive = {
-    case Tick => count += 1
-    case Get  => sender ! count
+    io.linesR(dir + "/taft_tap.txt")
+      .filter(s => !s.trim.isEmpty && !s.startsWith("//"))
+      .map(line => Taft.add100(line.toDouble).toString)
+      .intersperse("\n")
+      .pipe(text.utf8Encode)
+      .to(io.fileChunkW(dir + "/taft_sink.txt"))
+      .run
   }
 }
 
-object Taft extends App {
-  val system = ActorSystem("Taft")
-
-  val counter = system.actorOf(Props[Counter])
-
-  counter ! Tick
-  counter ! Tick
-  counter ! Tick
-
-  implicit val timeout = Timeout(5 seconds)
-
-  (counter ? Get) onSuccess {
-    case count => println("Count is " + count)
-  }
-
-  system.shutdown()
-}

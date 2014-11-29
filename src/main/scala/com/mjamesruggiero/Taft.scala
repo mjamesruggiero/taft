@@ -1,4 +1,4 @@
-package com.sharethrough
+package com.mjamesruggiero
 
 import scalaz.stream._
 import scalaz.concurrent.Task

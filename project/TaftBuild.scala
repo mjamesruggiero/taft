@@ -23,6 +23,7 @@ object Dependencies {
     val awsSdk     = "1.6.10"
 
     // Scala
+    val scalacheck = "1.12.2"
     val argot      = "1.0.1"
     val config     = "1.0.2"
     val scalaUtil  = "0.1.0"
@@ -44,11 +45,12 @@ object Dependencies {
     val awsSdk      = "com.amazonaws"              % "aws-java-sdk"     % Versions.awsSdk
 
     // Scala
+    val scalacheck  = "org.scalacheck"             %% "scalacheck"      % Versions.scalacheck
     val argot       = "org.clapper"                %% "argot"           % Versions.argot
     val config      = "com.typesafe"               %  "config"          % Versions.config
     val scalaUtil   = "com.snowplowanalytics"      %  "scala-util"      % Versions.scalaUtil
     val scalazon    = "io.github.cloudify"         %% "scalazon"        % Versions.scalazon
-    val scalaz      = "org.scalaz.stream"          %% "scalaz-stream"   % Versions.scalaz,
+    val scalaz      = "org.scalaz.stream"          %% "scalaz-stream"   % Versions.scalaz
 
     // Scala compile only for sbt-thrift.
     val commonsLang3 = "org.apache.commons" % "commons-lang3" % Versions.commonsLang3 % "compile"
@@ -91,7 +93,9 @@ object TaftBuild extends Build {
         Libraries.thrift,
         Libraries.slf4j,
         Libraries.awsSdk,
-        Libraries.scalaz)
+        Libraries.scalaz,
+        Libraries.scalacheck
+      )
     )
   )
 }

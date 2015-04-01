@@ -22,5 +22,11 @@ object DistanceSpec extends Properties("Distance") {
       case (l, r) => Distance.manhattan(l, r) =? (l, r).zipped.foldLeft(0.0)((s, t) => s + Math.abs(t._1 - t._2))
     }
   }
+
+  property("euclidean") = forAll(doubleArrGen) { a =>
+    a match {
+      case (l, r) => Distance.euclidean(l, r) =? Math.sqrt( (l, r).zipped.foldLeft(0.0)((s, t) => { val d = t._1 - t._2; s + d * d }))
+    }
+  }
 }
 

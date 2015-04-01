@@ -15,4 +15,16 @@ object Distance {
     }
     Math.sqrt(dist)
   }
+
+  def cosine(x: Array[Double], y: Array[Double]): Double  = {
+    val zeros = (0.0, 0.0, 0.0)
+
+    def sq(x: Double): Double = x * x
+
+    val norms = (x, y).zipped.foldLeft(zeros) { (s, t) =>
+      (s._1 + t._1 * t._2, s._2 + sq(t._1), s._3 + sq(t._2))
+    }
+
+    norms._1 / Math.sqrt(norms._2 * norms._3)
+  }
 }

@@ -39,4 +39,18 @@ class Stats(values: Vector[Double]) {
 
 object Stats {
   def apply(v: Vector[Double]) = new Stats(v)
+
+  final val ZERO_EPS = 1e-12
+  final val INV_SQUARE_ROOT_2PI = 1.0 / Math.sqrt(2.0 * Math.PI)
+
+  def gauss(
+    mean: Double,
+    standardDeviation: Double,
+    values: Vector[Double]
+  ): Vector[Double] = values.map { x =>
+      val y = x - mean
+      val variance = standardDeviation * standardDeviation
+      INV_SQUARE_ROOT_2PI * Math.exp(-0.5 * y * y / variance) / standardDeviation
+    }
+
 }

@@ -46,9 +46,12 @@ object StatsSpec extends Properties("Stats") {
       val y = v - mean
       inv_square_root_2pi * Math.exp(-0.5 * y * y / variance ) / stats.stdDev
     })
+
+    val minimumDelta = 0.0000000000001
     val tolerancesAreAcceptable = (g, expected).zipped.map { (expected: Double, actual: Double) =>
-      deltaWithinTolerance(expected, actual, 0.0000000000001)
-    }.foldLeft(true)(_ && _)
+      deltaWithinTolerance(expected, actual, minimumDelta)
+    }.forall(identity)
+
     (tolerancesAreAcceptable == true)
   }
 

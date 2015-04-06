@@ -8,6 +8,10 @@ object StatsSpec extends Properties("Stats") {
   import org.scalacheck.Prop.BooleanOperators
   import org.scalacheck.Gen.choose
 
+  def deltaWithinTolerance(expected: Double, actual: Double, tolerance: Double): Boolean = {
+    Math.abs(expected - actual) < tolerance
+  }
+
   val doubleTupGen = for {
     n <- choose(-100.0, 100.0)
     m <- choose(-100.0, 100.0)
@@ -53,9 +57,5 @@ object StatsSpec extends Properties("Stats") {
     }.forall(identity)
 
     (tolerancesAreAcceptable == true)
-  }
-
-  def deltaWithinTolerance(expected: Double, actual: Double, tolerance: Double): Boolean = {
-    Math.abs(expected - actual) < tolerance
   }
 }

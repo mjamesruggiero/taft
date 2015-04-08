@@ -9,6 +9,8 @@ class TSeries[T](val label: String, arr: Array[T]) {
   def == (that: TSeries[T]): Boolean = {
     size == that.size && arr.equals(that.toArray)
   }
+
+  def take(n: Int): TSeries[T] = new TSeries(label, arr.take(n))
 }
 
 object TSeries {

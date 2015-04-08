@@ -19,4 +19,9 @@ object TSeriesSpec extends Properties("TSeries") {
     val ts2 = TSeries("bar", arr)
     ts1 == ts2
   }
+
+  property("take") = forAll { (n1: Float, n2: Float) =>
+    val ts1 = TSeries("foo", Array(n1, n2))
+    ts1.take(1).toArray.length == 1
+  }
 }

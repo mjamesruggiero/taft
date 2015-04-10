@@ -1,4 +1,4 @@
-package com.mjamesruggiero
+package com.mjamesruggiero.taft
 
 import scalaz.State
 

@@ -1,4 +1,4 @@
-import com.mjamesruggiero.Distance
+import com.mjamesruggiero.taft.Distance
 
 import org.scalacheck._
 

@@ -1,4 +1,4 @@
-package com.mjamesruggiero
+package com.mjamesruggiero.taft
 
 class Stats(values: Vector[Double]) {
   final val ZERO_EPS = 1e-12

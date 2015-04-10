@@ -1,4 +1,4 @@
-package com.mjamesruggiero
+package com.mjamesruggiero.taft
 
 import scalaz.Monoid
 import scalaz.syntax.traverse._

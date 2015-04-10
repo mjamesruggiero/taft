@@ -1,4 +1,4 @@
-package com.mjamesruggiero
+package com.mjamesruggiero.taft
 
 object LinearAlgebra {
   implicit class Matrix2D(a: Vector[Vector[Double]]) {

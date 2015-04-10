@@ -1,4 +1,4 @@
-import com.mjamesruggiero.Stats
+import com.mjamesruggiero.taft.Stats
 
 import org.scalacheck._
 

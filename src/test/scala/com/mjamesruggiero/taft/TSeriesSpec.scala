@@ -1,4 +1,4 @@
-import com.mjamesruggiero.TSeries
+import com.mjamesruggiero.taft.TSeries
 
 import org.scalacheck._
 

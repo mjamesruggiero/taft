@@ -1,4 +1,4 @@
-package com.mjamesruggiero
+package com.mjamesruggiero.taft
 
 class TSeries[T](val label: String, arr: Array[T]) {
 

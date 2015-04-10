@@ -6,7 +6,7 @@ object Client {
   import org.scribe.model._
   import org.scribe.oauth._
 
-  def getClient(apiKey: String, apiSecret: String) = {
+  def getClient(apiKey: String, apiSecret: String): Token = {
     val service = new ServiceBuilder().provider(classOf[TwitterApi]).
                                        apiKey(apiKey).
                                        apiSecret(apiSecret).

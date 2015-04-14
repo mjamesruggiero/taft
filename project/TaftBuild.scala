@@ -11,7 +11,8 @@ object Dependencies {
     "bigtoast-github" at "http://bigtoast.github.com/repo/",
     "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases",
     "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases",
-    "scribe" at "https://raw.github.com/fernandezpablo85/scribe-java/mvn-repo/"
+    "scribe" at "https://raw.github.com/fernandezpablo85/scribe-java/mvn-repo/",
+    "spray" at "http://repo.spray.io/"
   )
 
   object Versions {
@@ -29,6 +30,8 @@ object Dependencies {
     val scalaUtil  = "0.1.0"
     val scalazon   = "0.5"
     val scalaz     = "0.5"
+    val scodec     = "1.0.5"
+    val spray      = "1.2.3"
 
     // Scala compile only for sbt-thrift.
     val commonsLang3 = "3.1"
@@ -50,6 +53,8 @@ object Dependencies {
     val scalaUtil   = "com.snowplowanalytics"      %  "scala-util"      % Versions.scalaUtil
     val scalazon    = "io.github.cloudify"         %% "scalazon"        % Versions.scalazon
     val scalaz      = "org.scalaz.stream"          %% "scalaz-stream"   % Versions.scalaz
+    val scodec      = "org.scodec"                 %% "scodec-bits"     % Versions.scodec
+    val spray       = "io.spray"                   %% "spray-json"      % Versions.spray
 
     // Scala compile only for sbt-thrift.
     val commonsLang3 = "org.apache.commons"        % "commons-lang3"   % Versions.commonsLang3 % "compile"
@@ -92,7 +97,9 @@ object TaftBuild extends Build {
         Libraries.awsSdk,
         Libraries.scalaz,
         Libraries.scalacheck,
-        Libraries.scribe
+        Libraries.scribe,
+        Libraries.scodec,
+        Libraries.spray
       )
     )
   )

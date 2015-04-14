@@ -26,3 +26,4 @@ newrelic
 .DS_Store
 dump.rdb
 TODO.md
+src/main/resources/keys.json

@@ -1,6 +1,5 @@
 import sbt._
 import sbt.Keys._
-import com.github.bigtoast.sbtthrift.ThriftPlugin
 import sbtassembly.Plugin._
 import AssemblyKeys._
 
@@ -8,7 +7,6 @@ object Dependencies {
   val resolutionRepos = Seq(
     "Snowplow Analytics Maven repo" at "http://maven.snplow.com/releases/",
     "BintrayJCenter" at "http://jcenter.bintray.com",
-    "bigtoast-github" at "http://bigtoast.github.com/repo/",
     "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases",
     "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases",
     "scribe" at "https://raw.github.com/fernandezpablo85/scribe-java/mvn-repo/",
@@ -32,10 +30,6 @@ object Dependencies {
     val scalaz     = "0.5"
     val scodec     = "1.0.5"
     val spray      = "1.2.3"
-
-    // Scala compile only for sbt-thrift.
-    val commonsLang3 = "3.1"
-    val thrift = "0.9.0"
   }
 
   object Libraries {
@@ -55,10 +49,6 @@ object Dependencies {
     val scalaz      = "org.scalaz.stream"          %% "scalaz-stream"   % Versions.scalaz
     val scodec      = "org.scodec"                 %% "scodec-bits"     % Versions.scodec
     val spray       = "io.spray"                   %% "spray-json"      % Versions.spray
-
-    // Scala compile only for sbt-thrift.
-    val commonsLang3 = "org.apache.commons"        % "commons-lang3"   % Versions.commonsLang3 % "compile"
-    val thrift       = "org.apache.thrift"         % "libthrift"       % Versions.thrift % "compile"
   }
 }
 
@@ -91,8 +81,6 @@ object TaftBuild extends Build {
         Libraries.config,
         Libraries.scalaUtil,
         Libraries.scalazon,
-        Libraries.commonsLang3,
-        Libraries.thrift,
         Libraries.slf4j,
         Libraries.awsSdk,
         Libraries.scalaz,

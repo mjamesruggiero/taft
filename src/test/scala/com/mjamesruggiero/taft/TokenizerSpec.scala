@@ -15,7 +15,12 @@ object TokenizerSpec extends Properties("Tokenizer") {
     "DRIVES MY GREEN AGE; THAT BLASTS THE ROOTS OF TREES",
     "IS MY DESTROYER.",
     "AND I AM DUMB TO TELL THE CROOKED ROSE",
-    "MY YOUTH IS BENT BY THE SAME WINTRY FEVER."
+    "MY YOUTH IS BENT BY THE SAME WINTRY FEVER.",
+    "FOR ONE THROB OF THE ARTERY",
+    "WHILE ON THAT OLD GREY STONE I SAT",
+    "UNDER THE OLD WIND-BROKEN TREE",
+    "I KNEW THAT ONE IS ANIMATE",
+    "MANKIND INANIMATE PHANTASY."
   )
 
   val poems: Gen[String] = for {
@@ -25,15 +30,13 @@ object TokenizerSpec extends Properties("Tokenizer") {
   } yield List(one, two, three).mkString("\n")
 
   property("stopwords") = forAll(poems) { (fakePoem: String) =>
-    val t = new Tokenizer(fakePoem)
+    val t = Tokenizer(fakePoem)
     val stops = Tokenizer.stopWords.toSet
     stops.intersect(t.eachWord.toSet).size == 0
   }
 
   property("lowercase") = forAll(poems) { (fakePoem: String) =>
-    val t = new Tokenizer(fakePoem)
-    val chars = t.eachWord.mkString("").toSet
+    val chars = Tokenizer(fakePoem).eachWord.mkString("").toSet
     chars.intersect(('A' to 'Z').toSet).size == 0
   }
 }
-

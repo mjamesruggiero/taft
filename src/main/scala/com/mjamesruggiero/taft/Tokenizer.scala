@@ -9,14 +9,10 @@ class Tokenizer(t: String) {
     replaceAll("""[^a-zA-Z]+""", " ").
     split("""\s+""")
 
-  private def eachWord(text: String): List[String] = {
-    var tokens = List[String]()
-    words(text).foreach((word: String) =>
-        if (!(Tokenizer.stopWords contains word)) {
-            tokens = tokens ::: List(word)
-        })
-    tokens
-  }
+  private def eachWord(text: String): List[String] =
+    words(text).foldLeft(List[String]()) { (r,c) =>
+      if ((Tokenizer.stopWords contains(c))) r else c :: r
+    }
 
   def eachWord: List[String]  = eachWord(t)
 }
@@ -79,4 +75,6 @@ object Tokenizer {
     "with", "within", "without", "would", "yet", "you", "your", "yours",
     "yourself", "yourselves"
   )
+
+  def apply(text: String): Tokenizer = new Tokenizer(text)
 }

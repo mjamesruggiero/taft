@@ -29,4 +29,19 @@ object Stemmer {
     }
     else false
   }
+
+  def stringMeasure(str: String): Int = {
+    var count = 0
+    var vowelSeen: Boolean = false
+
+    for (i <- 0 to str.length - 1) {
+      if (isVowel(str(i))) {
+        vowelSeen = true
+      } else if (vowelSeen) {
+        count += 1
+        vowelSeen = false
+      }
+    }
+    count
+  }
 }

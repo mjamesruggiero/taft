@@ -12,6 +12,10 @@ object StemmerSpec extends Properties("Stemmer") {
 
   val wordsWithoutVowels = Gen.oneOf("fff", "ggg", "ttt", "qqq")
 
+  val wordsThatAreCVC = Gen.oneOf("habit", "pet", "bergamot", "ergot", "lap")
+
+  val wordsThatAreNotCVC = Gen.oneOf("money", "rent", "fool", "desk", "if")
+
   property("vowels") = forAll(vowels) { (c: Char) =>
     Stemmer.isVowel(c) == true
   }
@@ -21,6 +25,14 @@ object StemmerSpec extends Properties("Stemmer") {
   }
 
   property("containsVowels doesn't see consonants") = forAll(wordsWithoutVowels) {
-      (w: String) => Stemmer.containsVowel(w) == false
+    (w: String) => Stemmer.containsVowel(w) == false
+  }
+
+  property("endsWithConsonantVConsonant finds CVS") = forAll(wordsThatAreCVC) {
+    (w: String) => Stemmer.endsWithConsonantVConsonant(w) == true
+  }
+
+  property("endsWithConsonantVConsonant finds CVS") = forAll(wordsThatAreNotCVC) {
+    (w: String) => Stemmer.endsWithConsonantVConsonant(w) == false
   }
 }

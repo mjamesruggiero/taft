@@ -44,4 +44,20 @@ object Stemmer {
     }
     count
   }
+
+  /**
+   * Special check for occasion when y is a vowel
+   */
+  def isVowel(str: String, i: Int): Boolean  = {
+    for (ch <- "aeiou" toList) {
+      if (str(i) == ch || ((str(i) == 'y') && // you are 'y'
+                           (i > 0) &&      // not the first letter
+                           (i + 1 < str.length) && // not the last, either
+                           (!isVowel(str(i - 1))) && // preceded by consonant
+                           (!isVowel(str(i + 1))))) { // succeeded by consonant
+        return true
+      }
+    }
+    false
+  }
 }

@@ -20,6 +20,8 @@ object StemmerSpec extends Properties("Stemmer") {
 
   val cvcTwos = Gen.oneOf("lantern", "dipthong", "leapfrog", "sheepskin")
 
+  val wordsWithYVowel = Gen.oneOf("cyst", "nymph", "lynch", "myth", "hymns")
+
   property("vowels") = forAll(vowels) { (c: Char) =>
     Stemmer.isVowel(c) == true
   }
@@ -42,5 +44,9 @@ object StemmerSpec extends Properties("Stemmer") {
 
   property("stringMeasure finds CVC counts") = forAll(cvcTwos) {
     (w: String) => Stemmer.stringMeasure(w) == 2
+  }
+
+  property("isVowel (overloaded) looks at y") = forAll(wordsWithYVowel) {
+    (w: String) => Stemmer.isVowel(w, 1) == true
   }
 }

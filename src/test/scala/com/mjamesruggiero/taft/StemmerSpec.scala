@@ -22,15 +22,17 @@ object StemmerSpec extends Properties("Stemmer") {
 
   val wordsWithYVowel = Gen.oneOf("cyst", "nymph", "lynch", "myth", "hymns")
 
+  val wordsEndingInY = Gen.oneOf("happy", "lucky", "sorry")
+
   property("vowels") = forAll(vowels) { (c: Char) =>
     Stemmer.isVowel(c) == true
   }
 
-  property("containsVowels sees vowels") = forAll(wordsWithVowels) { (w: String) =>
+  property("containsVowel sees vowels") = forAll(wordsWithVowels) { (w: String) =>
     Stemmer.containsVowel(w) == true
   }
 
-  property("containsVowels doesn't see consonants") = forAll(wordsWithoutVowels) {
+  property("containsVowel doesn't see consonants") = forAll(wordsWithoutVowels) {
     (w: String) => Stemmer.containsVowel(w) == false
   }
 
@@ -48,5 +50,9 @@ object StemmerSpec extends Properties("Stemmer") {
 
   property("isVowel (overloaded) looks at y") = forAll(wordsWithYVowel) {
     (w: String) => Stemmer.isVowel(w, 1) == true
+  }
+
+  property("step_1_c changes words ending in y") = forAll(wordsEndingInY) {
+    (w: String) => Stemmer.step_1_c(w).endsWith("i")
   }
 }

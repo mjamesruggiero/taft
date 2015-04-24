@@ -60,4 +60,12 @@ object Stemmer {
     }
     false
   }
+
+  def step_1_c(str: String): String = {
+    val candidate = str.endsWith("y") && containsVowel(str.substring(0, str.length() -1))
+    candidate match {
+        case true => str.substring(0, str.length()) + "i"
+        case _ => str
+    }
+  }
 }

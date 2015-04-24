@@ -68,4 +68,42 @@ object Stemmer {
         case _ => str
     }
   }
+
+  def step_1_b(str: String): String  = {
+    if (str.endsWith("eed")) {
+      if (stringMeasure(str.substring(0, str.length - 3)) > 0) {
+          return str.substring(0, str.length - 1)
+      }
+    } else if ((str.endsWith("ed")) &&
+               (containsVowel(str.substring(0, str.length - 2)))) {
+                 return step_1_b_2(str.substring(0, str.length - 2))
+    } else if ((str.endsWith("ing")) && (containsVowel(str.substring(0, str.length - 3)))) {
+      return step_1_b_2(str.substring(0, str.length - 3))
+    }
+    str
+  }
+
+  def step_1_b_2(str: String): String = {
+    if ((str.endsWith("at") ||
+      str.endsWith("bl") ||
+      str.endsWith("iz"))) {
+        return str + "e"
+      } else if ((str.length > 1) && (endsWithDoubleConsonant(str)) &&
+        (!(str.endsWith("l")) || str.endsWith("s") || str.endsWith("z"))) {
+        return str.substring(0, str.length - 1)
+    } else if ((stringMeasure(str) == 1) && (endsWithConsonantVConsonant(str))) {
+        return str + "e"
+    }
+    str
+  }
+
+  def endsWithDoubleConsonant(str: String): Boolean = {
+    val c: Char = str.charAt(str.length - 1)
+    if (c == str.charAt(str.length - 2)) {
+        if (!containsVowel(str.substring(str.length - 2))) {
+            return true
+        }
+    }
+    false
+  }
 }

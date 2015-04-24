@@ -24,6 +24,21 @@ object StemmerSpec extends Properties("Stemmer") {
 
   val wordsEndingInY = Gen.oneOf("happy", "lucky", "sorry")
 
+  val basicWordsAndStems = Gen.oneOf(
+      ("bled", "bled"),
+      ("feed", "feed"),
+      ("plastered", "plaster"),
+      ("agreed", "agree"),
+      ("tabled", "table"),
+      ("fabled", "fable"),
+      ("troubled", "trouble"),
+      ("conflated", "conflate"),
+      ("troubled", "trouble"),
+      ("motoring", "motor"),
+      ("sing", "sing"),
+      ("waiting", "wait")
+    )
+
   property("vowels") = forAll(vowels) { (c: Char) =>
     Stemmer.isVowel(c) == true
   }
@@ -54,5 +69,14 @@ object StemmerSpec extends Properties("Stemmer") {
 
   property("step_1_c changes words ending in y") = forAll(wordsEndingInY) {
     (w: String) => Stemmer.step_1_c(w).endsWith("i")
+  }
+
+  property("step_1_c changes words ending in y") = forAll(wordsEndingInY) {
+    (w: String) => Stemmer.step_1_c(w).endsWith("i")
+  }
+
+  property("step_1_b stems basic words") = forAll(basicWordsAndStems) { tup =>
+    val (w, stem) = tup
+    Stemmer.step_1_b(w) == stem
   }
 }

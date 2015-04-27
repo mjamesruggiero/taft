@@ -34,7 +34,7 @@ class TweetFetcher extends Fetcher {
 
   def fetchBody(url: String, params: Map[String, String]): String = {
     import TwitterAuthorization._
-    val accessTokens - accessSourceTokens
+    val accessTokens = accessSourceTokens
     val service = new ServiceBuilder().provider(classOf[TwitterApi]).
       apiKey(accessTokens.consumerKey).
       apiSecret(accessTokens.consumerSecret).

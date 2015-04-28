@@ -88,7 +88,7 @@ object Stemmer {
       str.endsWith("bl") ||
       str.endsWith("iz"))) {
         return str + "e"
-      } else if ((str.length > 1) && (endsWithDoubleConsonant(str)) &&
+    } else if ((str.length > 1) && (endsWithDoubleConsonant(str)) &&
         (!(str.endsWith("l")) || str.endsWith("s") || str.endsWith("z"))) {
         return str.substring(0, str.length - 1)
     } else if ((stringMeasure(str) == 1) && (endsWithConsonantVConsonant(str))) {
@@ -105,5 +105,34 @@ object Stemmer {
         }
     }
     false
+  }
+
+  def replacePatterns(
+    str: String,
+    patterns: List[(String, String)],
+    comparer: Int => Boolean): String  = {
+      for (pattern <-patterns) {
+        if (str.endsWith(pattern._1)) {
+            val res = replaceLast(str, pattern._1, pattern._2)
+            if (comparer(stringMeasure(replaceLast(str, pattern._1, "")))) {
+                return res
+            } else {
+              return str
+            }
+        }
+      }
+    str
+  }
+
+  def replaceLast(
+    str: String,
+    pattern: String,
+    replacement: String) = new StringBuilder(str)
+                                  .replace(str.lastIndexOf(pattern), str.lastIndexOf(pattern) + pattern.length, replacement)
+                                  .toString
+
+
+  def step_1_a(str: String): String = {
+    replacePatterns(str, List(("sses", "ss"), ("ies", "i"), ("ss", "ss"), ("s", "")), _>=0)
   }
 }

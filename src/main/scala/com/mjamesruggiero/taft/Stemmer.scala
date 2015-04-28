@@ -135,4 +135,21 @@ object Stemmer {
   def step_1_a(str: String): String = {
     replacePatterns(str, List(("sses", "ss"), ("ies", "i"), ("ss", "ss"), ("s", "")), _>=0)
   }
+
+  def step_4(str: String): String = {
+    val patterns: List[(String, String)] = List(
+        ("al", ""), ("ance", ""), ("ence", ""), ("er", ""),
+        ("ic", ""), ("able", ""), ("ible", ""), ("ant", ""),
+        ("ement", ""), ("ment", ""), ("ent", ""), ("ou", ""),
+        ("ism", ""), ("ate", ""), ("iti", ""), ("ous", ""),
+        ("ive", ""), ("ize", "")
+      )
+    val res: String = replacePatterns(str, patterns, _>1)
+    if (str == res) {
+      val isLatinate = (str.endsWith("ision") || str.endsWith("tion")) && stringMeasure(str.substring(0, str.length - 3)) > 1
+      if (isLatinate) return str.substring(0, str.length - 3)
+      else return str
+    }
+    res
+  }
 }

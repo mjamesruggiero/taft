@@ -52,6 +52,15 @@ object StemmerSpec extends Properties("Stemmer") {
       ("elms", "elm")//,
     )
 
+  val mentsAndAbles = Gen.oneOf(
+      ("allowance", "allow"),
+      ("inference", "infer"),
+      ("adjustable", "adjust"),
+      ("effective", "effect"),
+      ("bowlderize", "bowlder"),
+      ("dependent", "depend")//,
+    )
+
   property("vowels") = forAll(vowels) { (c: Char) =>
     Stemmer.isVowel(c) == true
   }
@@ -93,6 +102,15 @@ object StemmerSpec extends Properties("Stemmer") {
     Stemmer.step_1_b(w) == stem
   }
 
+  property("step_1_a limits s-ending plurals") = forAll(sPlurals) { tup =>
+    val (w, stem) = tup
+    Stemmer.step_1_a(w) == stem
+  }
+
+  property("step_4 stems 'ments' and 'ables'") = forAll(mentsAndAbles) { tup =>
+    val (w, stem) = tup
+    Stemmer.step_4(w) == stem
+  }
   property("step_1_a limits s-ending plurals") = forAll(sPlurals) { tup =>
     val (w, stem) = tup
     Stemmer.step_1_a(w) == stem

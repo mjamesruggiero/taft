@@ -124,6 +124,9 @@ object Stemmer {
     str
   }
 
+  def replacePatterns(str: String, patterns: List[(String, String)]): String =
+    replacePatterns(str, patterns, _>0)
+
   def replaceLast(
     str: String,
     pattern: String,
@@ -151,5 +154,18 @@ object Stemmer {
       else return str
     }
     res
+  }
+
+  def step_3(str: String): String = {
+    val patterns: List[(String, String)] = List(
+      ("icate", "ic"),
+      ("ative", ""),
+      ("alize", "al"),
+      ("iciti", "ic"),
+      ("ical", "ic"),
+      ("ful", ""),
+      ("ness", "")//,
+    )
+    replacePatterns(str, patterns)
   }
 }

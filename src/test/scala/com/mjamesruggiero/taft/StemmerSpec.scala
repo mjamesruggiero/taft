@@ -69,6 +69,20 @@ object StemmerSpec extends Properties("Stemmer") {
     ("formalize", "formal")//,
   )
 
+  val descriptives = Gen.oneOf(
+    ("feudalism", "feudal"),
+    ("operator", "operate"),
+    ("predication", "predicate"),
+    ("formaliti", "formal"),
+    ("callousness", "callous"),
+    ("hopefulness", "hopeful"),
+    ("relational", "relate"),
+    ("conditional", "condition"),
+    ("rational", "rational"),
+    ("digitizer", "digitize"),
+    ("vietnamization", "vietnamize")//,
+  )
+
   property("vowels") = forAll(vowels) { (c: Char) =>
     Stemmer.isVowel(c) == true
   }
@@ -125,6 +139,15 @@ object StemmerSpec extends Properties("Stemmer") {
     Stemmer.step_1_a(w) == stem
   }
 
+  property("step_3 truncates adverbials") = forAll(adverbials) { tup =>
+    val (w, stem) = tup
+    Stemmer.step_3(w) == stem
+  }
+
+  property("step_2 truncates descriptives") = forAll(descriptives) { tup =>
+    val (w, stem) = tup
+    Stemmer.step_2(w) == stem
+  }
   property("step_3 truncates adverbials") = forAll(adverbials) { tup =>
     val (w, stem) = tup
     Stemmer.step_3(w) == stem

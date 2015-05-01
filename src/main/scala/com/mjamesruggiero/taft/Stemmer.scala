@@ -168,4 +168,32 @@ object Stemmer {
     )
     replacePatterns(str, patterns)
   }
+
+  def step_2(str: String): String = {
+    val patterns: List[(String, String)] = List(
+     ("ational", "ate"),
+     ("tional", "tion"),
+     ("enci", "ence"),
+     ("anci", "ance"),
+     ("izer", "ize"),
+     ("bli", "ble"),
+     ("alli", "al"),
+     ("entli", "ent"),
+     ("eli", "e"),
+     ("ousli", "ous"),
+     ("ization", "ize"),
+     ("ation", "ate"),
+     ("ator", "ate"),
+     ("alism", "al"),
+     ("iveness", "ive"),
+     ("fulness", "ful"),
+     ("ousness", "ous"),
+     ("fulness", "ful"),
+     ("aliti", "al"),
+     ("iviti", "ive"),
+     ("biliti", "ble"),
+     ("logi", "log")//,
+    )
+    replacePatterns(str, patterns)
+  }
 }

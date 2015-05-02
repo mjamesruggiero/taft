@@ -83,6 +83,17 @@ object StemmerSpec extends Properties("Stemmer") {
     ("vietnamization", "vietnamize")//,
   )
 
+  val endsInL = Gen.oneOf(
+    ("controll", "control"),
+    ("roll", "roll")//,
+  )
+
+  val silentEs = Gen.oneOf(
+    ("probate", "probat"),
+    ("rate", "rate"),
+    ("cease", "ceas")//,
+  )
+
   property("vowels") = forAll(vowels) { (c: Char) =>
     Stemmer.isVowel(c) == true
   }
@@ -148,8 +159,19 @@ object StemmerSpec extends Properties("Stemmer") {
     val (w, stem) = tup
     Stemmer.step_2(w) == stem
   }
+
   property("step_3 truncates adverbials") = forAll(adverbials) { tup =>
     val (w, stem) = tup
     Stemmer.step_3(w) == stem
+  }
+
+  property("step_5_b truncates longer l-ending words") = forAll(endsInL) { tup =>
+    val (w, stem) = tup
+    Stemmer.step_5_b(w) == stem
+  }
+
+  property("step_5_a truncates some silent Es") = forAll(silentEs) { tup =>
+    val (w, stem) = tup
+    Stemmer.step_5_a(w) == stem
   }
 }

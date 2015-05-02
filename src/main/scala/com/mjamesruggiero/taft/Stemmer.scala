@@ -196,4 +196,28 @@ object Stemmer {
     )
     replacePatterns(str, patterns)
   }
+
+  def step_5_a(str: String): String = {
+    if (
+      (stringMeasure(str.substring(0, str.length - 1)) > 1) &&
+      str.endsWith("e")) {
+        return str.substring(0, str.length - 1)
+    }  else if ((stringMeasure(str.substring(0, str.length - 1)) == 1) &&
+                (!endsWithConsonantVConsonant(str.substring(0, str.length - 1)))  &&
+                (str.endsWith("e"))
+      ) {
+        return str.substring(0, str.length - 1)
+    } else {
+      return str
+    }
+  }
+
+  def step_5_b(str: String): String = {
+    if (str.endsWith("l") && endsWithDoubleConsonant(str) && (stringMeasure(str.substring(0, str.length -1)) > 1)) {
+        str.substring(0, str.length - 1)
+    }  else {
+      str
+    }
+
+  }
 }

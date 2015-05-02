@@ -2,6 +2,18 @@ package com.mjamesruggiero.taft
 
 object Stemmer {
 
+  def stem(str: String): String = {
+    if (str.length > 3) {
+      for (ch <- str toList) {
+        if (!Character.isLetter(ch)) {
+            return str.toLowerCase
+        }
+      }
+    }
+    var s: String = step_1(str)
+    step_5(step_4(step_3(step_2(step_1(str))))).toLowerCase
+  }
+
   def isVowel(c: Char): Boolean = {
     "aeiou".toList.contains(c)
   }
@@ -96,6 +108,8 @@ object Stemmer {
     }
     str
   }
+
+  def step_1(str: String): String = step_1_c(step_1_b(step_1_a(str)))
 
   def endsWithDoubleConsonant(str: String): Boolean = {
     val c: Char = str.charAt(str.length - 1)
@@ -218,6 +232,7 @@ object Stemmer {
     }  else {
       str
     }
-
   }
+
+  def step_5 (str: String): String = step_5_b(step_5_a(str))
 }

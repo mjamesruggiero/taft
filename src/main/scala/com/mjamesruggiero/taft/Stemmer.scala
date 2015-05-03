@@ -47,7 +47,7 @@ object Stemmer {
     var vowelSeen: Boolean = false
 
     for (i <- 0 to str.length - 1) {
-      if (isVowel(str(i))) {
+      if (isVowel(str, i)) {
         vowelSeen = true
       } else if (vowelSeen) {
         count += 1
@@ -96,14 +96,15 @@ object Stemmer {
   }
 
   def step_1_b_2(str: String): String = {
-    if ((str.endsWith("at") ||
-      str.endsWith("bl") ||
-      str.endsWith("iz"))) {
+    if (str.endsWith("at") ||
+        str.endsWith("bl") ||
+        str.endsWith("iz")) {
         return str + "e"
     } else if ((str.length > 1) && (endsWithDoubleConsonant(str)) &&
-        (!(str.endsWith("l")) || str.endsWith("s") || str.endsWith("z"))) {
+        (!(str.endsWith("l") || str.endsWith("s") || str.endsWith("z")))) {
         return str.substring(0, str.length - 1)
-    } else if ((stringMeasure(str) == 1) && (endsWithConsonantVConsonant(str))) {
+    } else if ((stringMeasure(str) == 1) &&
+               (endsWithConsonantVConsonant(str))) {
         return str + "e"
     }
     str

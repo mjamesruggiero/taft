@@ -82,16 +82,20 @@ object Stemmer {
   }
 
   def step_1_b(str: String): String  = {
+    // m > 0 and EED to EE
     if (str.endsWith("eed")) {
       if (stringMeasure(str.substring(0, str.length - 3)) > 0) {
           return str.substring(0, str.length - 1)
       }
+      // contains vowel and ED
     } else if ((str.endsWith("ed")) &&
                (containsVowel(str.substring(0, str.length - 2)))) {
                  return step_1_b_2(str.substring(0, str.length - 2))
-    } else if ((str.endsWith("ing")) && (containsVowel(str.substring(0, str.length - 3)))) {
-      return step_1_b_2(str.substring(0, str.length - 3))
-    }
+    } else if ((str.endsWith("ing")) &&
+               (containsVowel(str.substring(0, str.length - 3))))
+             {
+                return step_1_b_2(str.substring(0, str.length - 3))
+             }
     str
   }
 
@@ -163,12 +167,19 @@ object Stemmer {
         ("ive", ""), ("ize", "")
       )
     val res: String = replacePatterns(str, patterns, _>1)
-    if (str == res) {
+
+    def handleLatinate(str: String): String = {
       val isLatinate = (str.endsWith("ision") || str.endsWith("tion")) && stringMeasure(str.substring(0, str.length - 3)) > 1
-      if (isLatinate) return str.substring(0, str.length - 3)
-      else return str
+      isLatinate match {
+          case true => str.substring(0, str.length - 3)
+          case _ => str
+      }
     }
-    res
+
+    (str == res) match {
+        case true => handleLatinate(str)
+        case _ => res
+    }
   }
 
   def step_3(str: String): String = {
@@ -228,10 +239,13 @@ object Stemmer {
   }
 
   def step_5_b(str: String): String = {
-    if (str.endsWith("l") && endsWithDoubleConsonant(str) && (stringMeasure(str.substring(0, str.length -1)) > 1)) {
-        str.substring(0, str.length - 1)
-    }  else {
-      str
+    val criteria = (str.endsWith("l") &&
+      endsWithDoubleConsonant(str) &&
+      (stringMeasure(str.substring(0, str.length -1)) > 1))
+
+    criteria match {
+        case true => str.substring(0, str.length - 1)
+        case _ => str
     }
   }
 

@@ -58,7 +58,10 @@ object StemmerSpec extends Properties("Stemmer") {
       ("adjustable", "adjust"),
       ("effective", "effect"),
       ("bowlderize", "bowlder"),
-      ("dependent", "depend")//,
+      ("dependent", "depend"),
+      ("communism", "commun"),
+      ("adjustment", "adjust"),
+      ("adoption", "adopt")//,
     )
 
   val adverbials = Gen.oneOf(
@@ -66,7 +69,8 @@ object StemmerSpec extends Properties("Stemmer") {
     ("hopeful", "hope"),
     ("goodness", "good"),
     ("electrical", "electric"),
-    ("formalize", "formal")//,
+    ("formalize", "formal"),
+    ("triplicate", "triplic")//,
   )
 
   val descriptives = Gen.oneOf(
@@ -102,6 +106,13 @@ object StemmerSpec extends Properties("Stemmer") {
     ("fall", "fall"),
     ("fil", "file"),
     ("tann", "tan")//,
+  )
+
+  val stemmerSamples = Gen.oneOf(
+    ("another", "anoth"),
+    ("heaven", "heaven"),
+    ("knows", "know"),
+    ("miserable", "miser")//,
   )
 
   property("vowels") = forAll(vowels) { (c: Char) =>
@@ -188,5 +199,10 @@ object StemmerSpec extends Properties("Stemmer") {
   property("step_5_a truncates some silent Es") = forAll(silentEs) { tup =>
     val (w, stem) = tup
     Stemmer.step_5_a(w) == stem
+  }
+
+  property("stemmer works") = forAll(stemmerSamples) { tup =>
+    val (w, stem) = tup
+    Stemmer.stem(w) == stem
   }
 }

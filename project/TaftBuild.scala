@@ -29,7 +29,7 @@ object Dependencies {
     val scalazon   = "0.5"
     val scalaz     = "0.5"
     val scodec     = "1.0.5"
-    val spray      = "1.2.3"
+    val spray      = "1.3.2"
   }
 
   object Libraries {

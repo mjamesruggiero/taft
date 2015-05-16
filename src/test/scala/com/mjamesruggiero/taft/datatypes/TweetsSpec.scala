@@ -2,6 +2,9 @@ import com.mjamesruggiero.taft.datatypes._
 
 import org.scalacheck._
 import spray.json._
+import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormatter
+import org.joda.time.format.DateTimeFormat
 
 object TweetsSpec extends Properties("Tweets") {
   import org.scalacheck.Prop.forAll
@@ -31,17 +34,34 @@ object TweetsSpec extends Properties("Tweets") {
     w <- word(n)
   } yield w
 
+  object DateFns {
+    def dateTimeToTwitterString(dateTime: DateTime): String = {
+      val patString = "E MMM d HH:mm:ss Z yyyy"
+      val dtf: DateTimeFormatter = DateTimeFormat.forPattern(patString);
+      dtf.print(dateTime)
+    }
+  }
+
+  import DateFns._
+
+  val genDate = for {
+    n <- Gen.choose(1, 100000)
+    v <- new DateTime(n)
+    ds <- dateTimeToTwitterString(v)
+  } yield ds
+
   val tweet: Gen[Tweet] = for {
     user <- twitterUser
     text <- tweetText
-  } yield Tweet(user, text)
+    date <- genDate
+  } yield Tweet(user, text, date)
 
   val tweetSeq: Gen[SearchResults] = for {
     statuses <- Gen.listOfN(tweetsInASearch, tweet)
   } yield (SearchResults(statuses))
 
   property("can parse tweets") = forAll(tweet) { t =>
-    val asString = s"""{ "user": { "screen_name": "${t.user}" }, "text": "${t.text}"}"""
+    val asString = s"""{ "user": { "screen_name": "${t.user}" }, "text": "${t.text}", "date": "${t.date}" }"""
     val testTweet = asString.asJson.convertTo[Tweet]
     testTweet.user.screen_name == t.user.screen_name
     testTweet.text == t.text

@@ -31,6 +31,7 @@ object Dependencies {
     val scodec     = "1.0.5"
     val spray      = "1.3.2"
     val nscalatime = "1.8.0"
+    val debasishg  = "3.0"
   }
 
   object Libraries {
@@ -51,6 +52,7 @@ object Dependencies {
     val scodec      = "org.scodec"                 %% "scodec-bits"     % Versions.scodec
     val spray       = "io.spray"                   %% "spray-json"      % Versions.spray
     val nscalatime  = "com.github.nscala-time"     %% "nscala-time"     % Versions.nscalatime
+    val debasishg   = "net.debasishg"              %% "redisclient"     % Versions.debasishg
   }
 }
 
@@ -90,7 +92,8 @@ object TaftBuild extends Build {
         Libraries.scribe,
         Libraries.scodec,
         Libraries.spray,
-        Libraries.nscalatime
+        Libraries.nscalatime,
+        Libraries.debasishg
       )
     )
   )

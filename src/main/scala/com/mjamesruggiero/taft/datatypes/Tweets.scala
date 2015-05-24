@@ -3,7 +3,7 @@ package com.mjamesruggiero.taft.datatypes
 import spray.json._
 
 case class TwitterUser(screen_name: String)
-case class Tweet(user: TwitterUser, text: String, date: String)
+case class Tweet(user: TwitterUser, text: String, created_at: String)
 case class SearchResults(statuses: List[Tweet])
 
 object TaftJsonProtocol extends DefaultJsonProtocol {

@@ -19,7 +19,7 @@ object TweetsSpec extends Properties("Tweets") {
   } yield (SearchResults(statuses))
 
   property("can parse tweets") = forAll(tweet) { t =>
-    val asString = s"""{ "user": { "screen_name": "${t.user}" }, "text": "${t.text}", "date": "${t.date}" }"""
+    val asString = s"""{ "user": { "screen_name": "${t.user}" }, "text": "${t.text}", "created_at": "${t.created_at}" }"""
     val testTweet = asString.asJson.convertTo[Tweet]
     testTweet.user.screen_name == t.user.screen_name
     testTweet.text == t.text

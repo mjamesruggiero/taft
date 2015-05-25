@@ -5,6 +5,8 @@ import spray.json._
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormatter
 import org.joda.time.format.DateTimeFormat
+import scala.io.Source
+import Prop._
 
 object TweetsSpec extends Properties("Tweets") {
   import org.scalacheck.Prop.forAll

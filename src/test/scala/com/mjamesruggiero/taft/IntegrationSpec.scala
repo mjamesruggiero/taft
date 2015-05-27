@@ -1,8 +1,10 @@
+import com.mjamesruggiero.taft._
 import com.mjamesruggiero.taft.datatypes._
-
 import spray.json._
 import scala.io.Source
 import org.scalatest._
+import scalaz._, Scalaz._
+import scalaz.concurrent.Task
 
 class ExampleSpec extends FlatSpec with Matchers {
   import TaftJsonProtocol._
@@ -28,5 +30,24 @@ class ExampleSpec extends FlatSpec with Matchers {
     val tweets = jsArr.convertTo[List[Tweet]]
     val messages = tweets.map(_.text).mkString(",")
     "reactive streams".r.findAllIn(messages).length should be (1)
+  }
+
+  "Tasks" should "generate tokenized strings" in {
+    val mr = TwitterUser("mjamesruggiero")
+    val dateStr = "Sat May 09 05:22:23 +0000 2015"
+
+    val statuses = List(
+      "fake message",
+      "another fake message",
+      "yet another fake message",
+      "fourth in a series of fake messages",
+      "fifth in a series of fake messages"
+    )
+
+    val tweets = statuses.map { m => Tweet(mr, m, dateStr) }.toList
+    val tasks = tweets.map(t => Task { Analyzer(t).tokenize })
+    val tokens = Task.gatherUnordered(tasks).run.flatMap(identity)
+    val expectedSize = 14
+    tokens.size should be (expectedSize)
   }
 }

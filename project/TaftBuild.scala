@@ -26,8 +26,7 @@ object Dependencies {
     val scalacheck = "1.12.2"
     val config     = "1.0.2"
     val scalaUtil  = "0.1.0"
-    val scalazon   = "0.5"
-    val scalaz     = "0.5"
+    val scalaz     = "0.7a"
     val scodec     = "1.0.5"
     val spray      = "1.3.2"
     val nscalatime = "1.8.0"
@@ -48,7 +47,6 @@ object Dependencies {
     val scalacheck  = "org.scalacheck"             %% "scalacheck"      % Versions.scalacheck
     val config      = "com.typesafe"               %  "config"          % Versions.config
     val scalaUtil   = "com.snowplowanalytics"      %  "scala-util"      % Versions.scalaUtil
-    val scalazon    = "io.github.cloudify"         %% "scalazon"        % Versions.scalazon
     val scalaz      = "org.scalaz.stream"          %% "scalaz-stream"   % Versions.scalaz
     val scodec      = "org.scodec"                 %% "scodec-bits"     % Versions.scodec
     val spray       = "io.spray"                   %% "spray-json"      % Versions.spray
@@ -67,7 +65,7 @@ object TaftBuild extends Build {
     }
   )
 
-  val ScalaVersion = "2.10.3"
+  val ScalaVersion = "2.11.1"
 
   lazy val taft = Project(
     id = "taft",
@@ -86,7 +84,6 @@ object TaftBuild extends Build {
         Libraries.httpClient,
         Libraries.config,
         Libraries.scalaUtil,
-        Libraries.scalazon,
         Libraries.slf4j,
         Libraries.awsSdk,
         Libraries.scalaz,

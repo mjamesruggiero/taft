@@ -31,8 +31,9 @@ object TwitterGenerators {
   } yield w
 
   object DateFns {
+    lazy val patString = "E MMM d HH:mm:ss Z yyyy"
+
     def dateTimeToTwitterString(dateTime: DateTime): String = {
-      val patString = "E MMM d HH:mm:ss Z yyyy"
       val dtf: DateTimeFormatter = DateTimeFormat.forPattern(patString);
       dtf.print(dateTime)
     }
@@ -40,9 +41,11 @@ object TwitterGenerators {
 
   import DateFns._
 
+  lazy val earliestDate = new DateTime(2005, 3, 26, 12, 0, 0, 0).getMillis
+
   val genDate = for {
     n <- Gen.choose(1, 100000)
-    v <- new DateTime(n)
+    v <- new DateTime(n) suchThat (_.getMillis > earliestDate)
     ds <- dateTimeToTwitterString(v)
   } yield ds
 

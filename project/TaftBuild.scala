@@ -75,8 +75,9 @@ object TaftBuild extends Build {
       organization := "com.mjamesruggiero",
       version := "0.1-SNAPSHOT",
       scalaVersion := ScalaVersion,
-
       resolvers ++= Dependencies.resolutionRepos,
+      cancelable in Global := true,
+      fork in run := true,
 
       libraryDependencies ++= Seq(
         Libraries.logging,

@@ -6,7 +6,7 @@ import scala.concurrent.duration._
 import scalaz.concurrent.{Task, Strategy}
 import scalaz.stream.{time, Process, async}
 
-object Pipeline {
+object Taft extends App {
   import TaftJsonProtocol._
 
   implicit val scheduler = Strategy.DefaultTimeoutScheduler
@@ -36,6 +36,9 @@ object Pipeline {
   val dequeueProcess = queue
                         .dequeueAvailable
                         .flatMap(el => Process.eval_(Task {
-                          println(el.map(_.text).mkString("\n"))
+                          println(el.flatMap(Analyzer(_).tokenize))
                         }))
+
+
+  (enqueueProcess merge dequeueProcess).run.run
 }

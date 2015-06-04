@@ -1,11 +1,12 @@
-import com.mjamesruggiero.taft.Stemmer
+package com.mjamesruggiero.taft
 
+import com.mjamesruggiero.taft.Stemmer
+import com.mjamesruggiero.taft.Utils
 import org.scalacheck._
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatter
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
-import com.mjamesruggiero.taft.Utils
 
 object UtilsSpec extends Properties("Utils") {
   import org.scalacheck.Prop.forAll

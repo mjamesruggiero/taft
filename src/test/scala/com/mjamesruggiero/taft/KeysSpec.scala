@@ -1,5 +1,6 @@
-import com.mjamesruggiero.taft._
+package com.mjamesruggiero.taft
 
+import com.mjamesruggiero.taft.Utils
 import com.mjamesruggiero.taft.datatypes._
 import org.scalacheck._
 import spray.json._
@@ -15,15 +16,13 @@ object KeysSpec extends Properties("Keys") {
   import TaftJsonProtocol._
   import TwitterGenerators._
 
-  val tweetsInASearch = 20
-
-  val tweetSeq: Gen[SearchResults] = for {
-    statuses <- Gen.listOfN(tweetsInASearch, tweet)
-  } yield (SearchResults(statuses))
-
-  property("can build tweet keys") = forAll(tweet) { t =>
-    val date = DateTime.parse(t.created_at).getMillis
-    val expected = s"${t.user.screen_name}:${date.toString}"
+  property("can build tweet keys") = forAll(genTweet) { t =>
+    val dt = Utils.parseDate(t.created_at)
+    val millis = dt match {
+        case Some(dateTime) => dateTime.getMillis
+        case _ => 0
+    }
+    val expected = s"${t.user.screen_name}:${millis.toString}"
     val ret = com.mjamesruggiero.taft.Keys.tweetKey(t)
     ret == expected
   }

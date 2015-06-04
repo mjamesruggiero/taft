@@ -6,6 +6,7 @@ import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 
 object Utils {
+
   def parseDate(dateString: String): Option[DateTime] = {
     val patString = "E MMM d HH:mm:ss Z yyyy"
     val dtf: DateTimeFormatter = DateTimeFormat.forPattern(patString)
@@ -13,6 +14,12 @@ object Utils {
         case dt: DateTime => Some(dt)
         case _ => None
     }
+  }
+
+  def dateTimeToTwitterString(dateTime: DateTime): String = {
+    val patString = "E MMM d HH:mm:ss Z yyyy"
+    val dtf: DateTimeFormatter = DateTimeFormat.forPattern(patString);
+    dtf.print(dateTime)
   }
 }
 

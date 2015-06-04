@@ -1,5 +1,6 @@
-import com.mjamesruggiero.taft.Tokenizer
+package com.mjamesruggiero.taft
 
+import com.mjamesruggiero.taft.Tokenizer
 import org.scalacheck._
 
 object TokenizerSpec extends Properties("Tokenizer") {

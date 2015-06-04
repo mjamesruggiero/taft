@@ -1,5 +1,6 @@
-import com.mjamesruggiero.taft.datatypes._
+package com.mjamesruggiero.taft
 
+import com.mjamesruggiero.taft.datatypes._
 import org.scalacheck._
 import spray.json._
 import org.joda.time.DateTime
@@ -17,10 +18,10 @@ object TweetsSpec extends Properties("Tweets") {
   val tweetsInASearch = 20
 
   val tweetSeq: Gen[SearchResults] = for {
-    statuses <- Gen.listOfN(tweetsInASearch, tweet)
+    statuses <- Gen.listOfN(tweetsInASearch, genTweet)
   } yield (SearchResults(statuses))
 
-  property("can parse tweets") = forAll(tweet) { t =>
+  property("can parse tweets") = forAll(genTweet) { t =>
     val asString = s"""{ "user": { "screen_name": "${t.user}" }, "text": "${t.text}", "created_at": "${t.created_at}" }"""
     val testTweet = asString.asJson.convertTo[Tweet]
     testTweet.user.screen_name == t.user.screen_name

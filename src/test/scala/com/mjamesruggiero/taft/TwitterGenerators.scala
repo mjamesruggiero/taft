@@ -1,3 +1,5 @@
+package com.mjamesruggiero.taft
+
 import org.scalacheck._
 import spray.json._
 import org.joda.time.DateTime
@@ -30,26 +32,16 @@ object TwitterGenerators {
     w <- word(n)
   } yield w
 
-  object DateFns {
-    lazy val patString = "E MMM d HH:mm:ss Z yyyy"
-
-    def dateTimeToTwitterString(dateTime: DateTime): String = {
-      val dtf: DateTimeFormatter = DateTimeFormat.forPattern(patString);
-      dtf.print(dateTime)
-    }
-  }
-
-  import DateFns._
-
   lazy val earliestDate = new DateTime(2005, 3, 26, 12, 0, 0, 0).getMillis
+  lazy val latestDate = new DateTime(2015, 3, 26, 12, 0, 0, 0).getMillis
 
   val genDate = for {
-    n <- Gen.choose(1, 100000)
-    v <- new DateTime(n) suchThat (_.getMillis > earliestDate)
-    ds <- dateTimeToTwitterString(v)
+    n <- Gen.choose(earliestDate, latestDate)
+    v <- new DateTime(n)
+    ds <- Utils.dateTimeToTwitterString(v)
   } yield ds
 
-  val tweet: Gen[Tweet] = for {
+  val genTweet: Gen[Tweet] = for {
     user <- twitterUser
     text <- tweetText
     date <- genDate

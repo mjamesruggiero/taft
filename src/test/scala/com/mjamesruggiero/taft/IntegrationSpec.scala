@@ -1,3 +1,5 @@
+package com.mjamesruggiero.taft
+
 import com.mjamesruggiero.taft._
 import com.mjamesruggiero.taft.datatypes._
 import spray.json._
@@ -6,7 +8,7 @@ import org.scalatest._
 import scalaz._, Scalaz._
 import scalaz.concurrent.Task
 
-class ExampleSpec extends FlatSpec with Matchers {
+class IntegrationSpec extends FlatSpec with Matchers {
   import TaftJsonProtocol._
 
   def fixture = new {

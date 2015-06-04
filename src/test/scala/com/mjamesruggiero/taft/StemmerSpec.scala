@@ -1,4 +1,4 @@
-import com.mjamesruggiero.taft.Stemmer
+package com.mjamesruggiero.taft
 
 import org.scalacheck._
 

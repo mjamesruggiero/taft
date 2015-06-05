@@ -2,26 +2,15 @@ package com.mjamesruggiero.taft
 
 import com.redis.RedisClientPool
 import scalaz.{ concurrent, Kleisli }, concurrent.Task
+import scala.util.{ Success, Failure }
 
 object Storage {
-  def get(key: String): Kleisli[Task, RedisClientPool, Option[String]] =
-    Kleisli { (pool: RedisClientPool) => Task {
-      pool.withClient { _.get(key) }
-    }}
+  def get(key: String, pool: RedisClientPool): Task[Option[String]] =
+    Task { pool.withClient { _.get(key) } }
 
-  def set(key: String, value: String, pool: RedisClientPool): Task[Boolean] =
-    Task {
-      try {
-        pool.withClient { _.set(key, value) }
-        true
-      }
-      catch {
-        case e : Exception => false
-      }
-    }
+  def set(key: String, value: String, pool: RedisClientPool): Task[Unit] =
+    Task { pool.withClient { _.set(key, value) } }
 
-  def delete(key: String): Kleisli[Task, RedisClientPool, Option[Long]] =
-    Kleisli { (pool: RedisClientPool) => Task {
-      pool.withClient { _.del(key) }
-    }}
+  def delete(key: String, pool: RedisClientPool): Task[Unit] =
+    Task { pool.withClient { _.del(key) } }
 }

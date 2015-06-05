@@ -52,7 +52,7 @@ object Taft extends App {
 
   val saveTweet = (el: Tweet) =>
     for {
-      success <- Storage.set(Keys.tweetKey(el), el.toJson.toString, rcp)
+      _ <- Storage.set(Keys.tweetKey(el), el.toJson.toString, rcp)
     } yield(el)
 
   val tokenizeTweet = (el: Tweet) => Task {

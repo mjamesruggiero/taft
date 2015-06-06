@@ -14,23 +14,20 @@ class IntegrationSpec extends FlatSpec with Matchers {
   def fixture = new {
     val testInputFile = "/tweets.json"
     val fileString = Source.fromURL(getClass.getResource(testInputFile)).getLines.mkString
+    val jsonVal = fileString.asJson
+    val jsArr = jsonVal.asInstanceOf[JsArray]
+    val tweets = jsArr.convertTo[List[Tweet]]
   }
 
   "Search results" should "be parseable as tweets" in {
     val f = fixture
-    val jsonVal = f.fileString.asJson
-    val jsArr = jsonVal.asInstanceOf[JsArray]
-    val tweets = jsArr.convertTo[List[Tweet]]
     val expected = 20
-    tweets.size should be (expected)
+    f.tweets.size should be (expected)
   }
 
   "Search results" should "contain expected messages" in {
     val f = fixture
-    val jsonVal = f.fileString.asJson
-    val jsArr = jsonVal.asInstanceOf[JsArray]
-    val tweets = jsArr.convertTo[List[Tweet]]
-    val messages = tweets.map(_.text).mkString(",")
+    val messages = f.tweets.map(_.text).mkString(",")
     "reactive streams".r.findAllIn(messages).length should be (1)
   }
 

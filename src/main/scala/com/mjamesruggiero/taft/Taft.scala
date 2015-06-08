@@ -1,73 +1,56 @@
 package com.mjamesruggiero.taft
 
-import scalaz._, Scalaz._
-import spray.json._
 import com.mjamesruggiero.taft.datatypes._
+import com.redis.RedisClientPool
+import org.joda.time.DateTime
 import scala.concurrent.duration._
+import scala.io.Source
+import scala.util.Random
+import scalaz._, Scalaz._
 import scalaz.concurrent.{Task, Strategy}
 import scalaz.stream.{time, Process, async}
-import org.joda.time.DateTime
-import com.redis.RedisClientPool
+import spray.json._
 
 object Taft extends App {
   import TaftJsonProtocol._
 
   implicit val scheduler = Strategy.DefaultTimeoutScheduler
 
+  val staticFile = "/Users/michaelruggiero/code/mr/taft/src/test/resources/tweets.json"
+
   val queue = async.boundedQueue[Tweet](100)
+
+  def getRandomTweet(lot: List[Tweet]): Tweet = {
+    val random = new Random
+    lot(random.nextInt(lot.length))
+  }
 
   val rcp = new RedisClientPool("localhost", 6379)
 
-  def mkRandomTweet: Tweet = {
-    lazy val twit = TwitterUser("mjamesruggiero")
-    lazy val dt = new DateTime
-
-    def randomString(length: Int, strings: Seq[String]): String = {
-      val tmpList = List.range(0, length)
-      tmpList
-        .map{ e => strings(util.Random.nextInt(strings.length)) }
-        .mkString(" ")
-    }
-
-    val words: List[String] = List(
-      "be", "happy", "car", "boat", "wondering",
-      "love", "monkey", "fish", "swim", "act",
-      "think", "the", "wonderful", "world",
-      "adrenaline", "distillery", "affecter", "bipod",
-      "bombproof", "centerline", "cloudlike", "commercialist",
-      "criticised", "deadfall", "decontamination", "defoliating",
-      "finding", "fixedly", "genolla", "homewood",
-      "imputative", "ineducability", "inferrible", "informativeness",
-      "intonate", "litoral", "madrilenian", "maybe",
-      "mayflower", "mousetrap", "nonactual", "nonchalance",
-      "nonofficial", "origin", "presswork",
-      "pustulated", "realter", "reapportion", "stubby",
-      "syndicate", "theosophical", "truehearted", "tryst",
-      "turgently", "unspellable", "unveneered", "valiant", "whir"
-    )
-    Tweet(twit, randomString(50, words), Utils.dateTimeToTwitterString(dt))
+  def tweetList: List[Tweet] = {
+    val fileString = Source.fromFile(staticFile).getLines.mkString
+    val jsonVal = fileString.asJson
+    val jsArr = jsonVal.asInstanceOf[JsArray]
+    jsArr.convertTo[List[Tweet]]
   }
-
-  def countTokens(l: List[String]) = l.groupBy(identity).mapValues(_.length)
 
   val saveTweet = (el: Tweet) =>
     for {
       _ <- Storage.set(Keys.tweetKey(el), el.toJson.toString, rcp)
     } yield(el)
 
+  def countTokens(l: List[String]) = l.groupBy(identity).mapValues(_.length)
+
   val tokenizeTweet = (el: Tweet) => Task {
     Analyzer(el).tokenize
   }
 
-  val processTokens = (l: List[String]) => Task {
-    println(countTokens(l))
-  }
+  val processTokens = (l: List[String]) => Task { println(countTokens(l)) }
 
   val enqueueProcess = time
                         .awakeEvery(60.millis)
-                        .map(_ => mkRandomTweet)
+                        .map(_ => getRandomTweet(tweetList))
                         .to(queue.enqueue)
-
 
   val dequeueProcess = queue
                         .dequeue

@@ -36,7 +36,7 @@ object Taft extends App {
 
   val saveTweet = (el: Tweet) =>
     for {
-      _ <- Storage.set(Keys.tweetKey(el), el.toJson.toString, rcp)
+      _ <- Database.set(Keys.tweetKey(el), el.toJson.toString, rcp)
     } yield(el)
 
   def countTokens(l: List[String]) = l.groupBy(identity).mapValues(_.length)

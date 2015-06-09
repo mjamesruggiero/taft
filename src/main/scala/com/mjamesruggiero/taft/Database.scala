@@ -4,7 +4,7 @@ import com.redis.RedisClientPool
 import scalaz.{ concurrent, Kleisli }, concurrent.Task
 import scala.util.{ Success, Failure }
 
-object Storage {
+object Database {
   def get(key: String, pool: RedisClientPool): Task[Option[String]] =
     Task { pool.withClient { _.get(key) } }
 

@@ -13,4 +13,8 @@ object Database {
 
   def delete(key: String, pool: RedisClientPool): Task[Unit] =
     Task { pool.withClient { _.del(key) } }
+
+  def sadd(set: String, value: String, pool: RedisClientPool): Task[Unit] = {
+    Task { pool.withClient { _.sadd(set, value) } }
+  }
 }

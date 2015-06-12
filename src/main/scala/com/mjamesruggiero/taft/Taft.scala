@@ -28,7 +28,8 @@ object Taft extends App {
   val rcp = new RedisClientPool("localhost", 6379)
 
   def tweetList: List[Tweet] = {
-    val fileString = Source.fromFile(staticFile).getLines.mkString
+    import com.mjamesruggiero.taft.TimelineInput
+    val fileString = TimelineInput("limit=100")
     val jsonVal = fileString.asJson
     val jsArr = jsonVal.asInstanceOf[JsArray]
     jsArr.convertTo[List[Tweet]]

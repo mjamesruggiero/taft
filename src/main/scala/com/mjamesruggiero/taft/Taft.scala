@@ -8,7 +8,7 @@ import scala.io.Source
 import scala.util.Random
 import scalaz._, Scalaz._
 import scalaz.concurrent.{Task, Strategy}
-import scalaz.stream.{time, Process, async}
+import scalaz.stream.{time, Process, Process1, async}
 import spray.json._
 
 object Taft extends App {
@@ -18,7 +18,12 @@ object Taft extends App {
 
   val staticFile = "/Users/michaelruggiero/code/mr/taft/src/test/resources/tweets.json"
 
-  val queue = async.boundedQueue[Tweet](100)
+  case class SearchResults(tweets: Seq[Tweet])
+
+  def resultsToTweets: Process1[SearchResults, Tweet] =
+    Process.await1 flatMap { results: SearchResults =>
+      Process.emitAll(results.tweets)
+    }
 
   def getRandomTweet(lot: List[Tweet]): Tweet = {
     val random = new Random
@@ -47,6 +52,8 @@ object Taft extends App {
   }
 
   val processTokens = (l: List[String]) => Task { println(countTokens(l)) }
+
+  val queue = async.boundedQueue[Tweet](100)
 
   val enqueueProcess = time
                         .awakeEvery(60.millis)

@@ -63,10 +63,11 @@ object SearchInput {
 object TimelineInput {
   def apply(queryString: String, fetcher: Fetcher = new TweetFetcher): String = {
     val timelineUrl = "https://api.twitter.com/1.1/statuses/home_timeline.json"
+    val maxCount: String = "200"
     def go(params: Map[String, String]): String = {
       fetcher.fetchBody(timelineUrl, params)
     }
-    go(Map("q" -> queryString, "exclude_replies" -> "true"))
+    go(Map("q" -> queryString, "count" -> maxCount, "exclude_replies" -> "true"))
   }
 }
 

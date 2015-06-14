@@ -20,8 +20,8 @@ object Taft extends App {
 
   def tweetList: List[Tweet] = {
     import com.mjamesruggiero.taft.TimelineInput
-    val fileString = TimelineInput("limit=100")
-    val jsonVal = fileString.asJson
+    val searchResult = TimelineInput("count=200")
+    val jsonVal = searchResult.asJson
     val jsArr = jsonVal.asInstanceOf[JsArray]
     jsArr.convertTo[List[Tweet]]
   }
@@ -36,7 +36,8 @@ object Taft extends App {
   }
 
   def process: Unit = {
-    for (tweet <- tweetList) {
+    val ts = tweetList
+    for (tweet <- ts) {
       saveTweet(tweet).run
     }
   }

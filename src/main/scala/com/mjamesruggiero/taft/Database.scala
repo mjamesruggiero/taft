@@ -17,4 +17,8 @@ object Database {
   def sadd(set: String, value: String, pool: RedisClientPool): Task[Unit] = {
     Task { pool.withClient { _.sadd(set, value) } }
   }
+
+  def zadd(key: String, score: Double, member: String, pool: RedisClientPool): Task[Unit] = {
+    Task { pool.withClient { _.zadd(key, score, member) } }
+  }
 }

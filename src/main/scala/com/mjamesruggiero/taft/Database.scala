@@ -21,4 +21,8 @@ object Database {
   def zadd(key: String, score: Double, member: String, pool: RedisClientPool): Task[Unit] = {
     Task { pool.withClient { _.zadd(key, score, member) } }
   }
+
+  def zincrby(key: String, incr: Double, member: String, pool: RedisClientPool): Task[Unit] = {
+    Task { pool.withClient { _.zincrby(key, incr, member) } }
+  }
 }

@@ -26,18 +26,32 @@ object Taft extends App {
     jsArr.convertTo[List[Tweet]]
   }
 
+  def countTokens(l: List[String]): Map[String, Int] =
+    l.groupBy(identity).mapValues(_.length)
+
   val saveTweet = (el: Tweet) =>
     for {
       _ <- Database.set(Keys.tweetKey(el), el.toJson.toString, rcp)
     } yield(el)
 
-  val tokenizeTweet = (el: Tweet) => Task {
-    Analyzer(el).tokenize
+  val persistToken = (token: String, count: Int) => {
+    for {
+      _ <- Database.zincrby("words", count.toDouble, token, rcp)
+    } yield((token, count))
+  }
+
+  def saveTokens= (el: Tweet) => Task {
+    val tokens = Analyzer(el).tokenize
+    val tokenMap = countTokens(tokens)
+    tokenMap.map { e =>
+      persistToken(e._1, e._2)
+    }
   }
 
   def process: Unit = {
     val ts = tweetList
     for (tweet <- ts) {
+      saveTokens(tweet).run
       saveTweet(tweet).run
     }
   }

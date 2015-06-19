@@ -34,18 +34,17 @@ object Taft extends App {
       _ <- Database.set(Keys.tweetKey(el), el.toJson.toString, rcp)
     } yield(el)
 
-  val persistToken = (token: String, count: Int) => {
-    for {
-      _ <- Database.zincrby("words", count.toDouble, token, rcp)
-    } yield((token, count))
+  val persistTokens = (tokens: Map[String, Int]) => {
+    val key = "words"
+    tokens.toList.foreach { (p) =>
+      Database.zincrby(key, p._2, p._1, rcp).run
+    }
   }
 
   def saveTokens= (el: Tweet) => Task {
     val tokens = Analyzer(el).tokenize
     val tokenMap = countTokens(tokens)
-    tokenMap.map { e =>
-      persistToken(e._1, e._2)
-    }
+    persistTokens(tokenMap)
   }
 
   def process: Unit = {

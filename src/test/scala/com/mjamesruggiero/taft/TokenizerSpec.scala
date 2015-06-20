@@ -24,10 +24,20 @@ object TokenizerSpec extends Properties("Tokenizer") {
     "MANKIND INANIMATE PHANTASY."
   )
 
+  val singleCharacterWords = Gen.oneOf(
+    "a", "b", "c", "d", "e", "f", "g"
+  )
+
   val poems: Gen[String] = for {
     one <- genLine
     two <- genLine
     three <- genLine
+  } yield List(one, two, three).mkString("\n")
+
+  val singleChars: Gen[String] = for {
+    one <- singleCharacterWords
+    two <- singleCharacterWords
+    three <- singleCharacterWords
   } yield List(one, two, three).mkString("\n")
 
   property("stopwords") = forAll(poems) { (fakePoem: String) =>
@@ -39,5 +49,10 @@ object TokenizerSpec extends Properties("Tokenizer") {
   property("lowercase") = forAll(poems) { (fakePoem: String) =>
     val chars = Tokenizer(fakePoem).eachWord.mkString("").toSet
     chars.intersect(('A' to 'Z').toSet).size == 0
+  }
+
+  property("filters out single chars") = forAll(singleChars) { (test: String) =>
+    val chars = Tokenizer(test).eachWord.mkString("").toSet
+    chars.toSet.size == 0
   }
 }

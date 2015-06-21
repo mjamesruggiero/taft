@@ -7,7 +7,8 @@ class Tokenizer(t: String) {
     toLowerCase.
     replaceAll("""['`]""", "").
     replaceAll("""[^a-zA-Z]+""", " ").
-    split("""\s+""").filterNot { _.size < 2 }
+    split("""\s+""").
+    filterNot { _.size < 2 }
 
   private def eachWord(text: String): List[String] =
     words(text).foldLeft(List[String]()) { (r,c) =>

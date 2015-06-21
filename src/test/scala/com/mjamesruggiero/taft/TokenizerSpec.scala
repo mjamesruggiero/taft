@@ -25,7 +25,7 @@ object TokenizerSpec extends Properties("Tokenizer") {
   )
 
   val singleCharacterWords = Gen.oneOf(
-    "a", "b", "c", "d", "e", "f", "g"
+    ('a' to 'z')
   )
 
   val poems: Gen[String] = for {
@@ -38,7 +38,7 @@ object TokenizerSpec extends Properties("Tokenizer") {
     one <- singleCharacterWords
     two <- singleCharacterWords
     three <- singleCharacterWords
-  } yield List(one, two, three).mkString("\n")
+  } yield List(one, two, three).mkString(" ")
 
   property("stopwords") = forAll(poems) { (fakePoem: String) =>
     val t = Tokenizer(fakePoem)

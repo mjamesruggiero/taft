@@ -14,8 +14,6 @@ import spray.json._
 object Taft extends App {
   import TaftJsonProtocol._
 
-  implicit val scheduler = Strategy.DefaultTimeoutScheduler
-
   val rcp = new RedisClientPool("localhost", 6379)
 
   def tweetList: List[Tweet] = {

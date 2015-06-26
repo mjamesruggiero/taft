@@ -70,7 +70,9 @@ object TaftBuild extends Build {
   lazy val taft = Project(
     id = "taft",
     base = file("."),
-    settings = Project.defaultSettings ++ Seq(
+    settings = Project.defaultSettings ++
+    assemblySettings ++
+    Seq(
       name := "taft",
       organization := "com.mjamesruggiero",
       version := "0.1-SNAPSHOT",

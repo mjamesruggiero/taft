@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+DIR=`dirname $0`
+java \
+  -Xms2048M \
+  -Xmx4096M \
+  -jar $DIR/taft.jar com.mjamesruggiero.taft.Taft

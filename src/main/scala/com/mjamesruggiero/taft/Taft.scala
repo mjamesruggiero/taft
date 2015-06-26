@@ -11,7 +11,7 @@ import scalaz.concurrent.{Task, Strategy}
 import scalaz.stream._
 import spray.json._
 
-object Taft extends App {
+object Taft {
   import TaftJsonProtocol._
 
   val rcp = new RedisClientPool("localhost", 6379)
@@ -40,11 +40,10 @@ object Taft extends App {
     }
   }
 
-  def process: Unit = {
+  def main(args: Array[String]): Unit = {
     val ts = tweetList
     for (tweet <- ts) {
       saveTweet(tweet).run
     }
   }
-  process
 }

@@ -20,8 +20,4 @@ object Topic {
   def tfidf(word: String, tokens: List[String], documents: List[List[String]]): Double = {
     tf(word, tokens) * idf(word, documents)
   }
-
-  def sortedWordScores(scores: List[WordScore]): List[WordScore] = {
-    scores.sortWith(_.score < _.score)
-  }
 }

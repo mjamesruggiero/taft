@@ -68,7 +68,7 @@ class TopicSpec extends FlatSpec with Matchers {
       WordScore(word, score)
     }.toList
 
-    val sorted = Topic.sortedWordScores(doc1Scores)
+    val sorted = doc1Scores.sortWith(_.score < _.score)
     val highest = sorted.last.word
     highest should equal("made-for-TV")
   }

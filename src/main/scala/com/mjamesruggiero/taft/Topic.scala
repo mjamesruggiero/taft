@@ -9,11 +9,8 @@ object Topic {
     count / tokens.length
   }
 
-  def nContaining(word: String, documents: List[List[String]]): Double = {
-    documents.map { doc =>
-      if (doc contains word) { 1.0 } else { 0.0 }
-    }.foldLeft(0.0)(_ + _)
-  }
+  def nContaining(word: String, documents: List[List[String]]): Double =
+    documents.filter(x => x contains word).length
 
   def idf(word: String, documents: List[List[String]]): Double = {
     val containing = nContaining(word, documents)

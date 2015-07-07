@@ -40,10 +40,22 @@ object Taft {
     }
   }
 
+  def calculateTerm(tweet: Tweet, tweets: List[Tweet], threshold: Double): Unit = {
+    val docs = tweets.map(Analyzer(_).tokenize).toList
+    val tokens = Analyzer(tweet).tokenize
+    tokens.foreach { t =>
+      val score = Topic.tfidf(t, tokens, docs)
+      if (score >= threshold) {
+        println(s"[calculateTerm] word = ${t} score = ${score}")
+      }
+    }
+  }
+
   def main(args: Array[String]): Unit = {
     val ts = tweetList
     for (tweet <- ts) {
       saveTweet(tweet).run
+      calculateTerm(tweet, ts, 0.06)
     }
   }
 }

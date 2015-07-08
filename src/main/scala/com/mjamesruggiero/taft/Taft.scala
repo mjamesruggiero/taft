@@ -40,13 +40,18 @@ object Taft {
     }
   }
 
+  def saveTopicScore = (token: String, score: Double) => Task {
+    val key = "topics"
+    Database.zincrby(key, score, token, rcp).run
+  }
+
   def calculateTerm(tweet: Tweet, tweets: List[Tweet], threshold: Double): Unit = {
     val docs = tweets.map(Analyzer(_).tokenize).toList
     val tokens = Analyzer(tweet).tokenize
     tokens.foreach { t =>
       val score = Topic.tfidf(t, tokens, docs)
       if (score >= threshold) {
-        println(s"[calculateTerm] word = ${t} score = ${score}")
+        saveTopicScore(t, score)
       }
     }
   }

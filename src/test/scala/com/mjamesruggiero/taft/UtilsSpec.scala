@@ -3,6 +3,7 @@ package com.mjamesruggiero.taft
 import com.mjamesruggiero.taft.Stemmer
 import com.mjamesruggiero.taft.Utils
 import org.scalacheck._
+import org.scalatest._
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatter
 import org.joda.time.DateTime
@@ -36,5 +37,19 @@ object UtilsSpec extends Properties("Utils") {
         case _  => dateTimeToTwitterString(DateTime.now)
     }
     ret.equals(twitterString)
+  }
+}
+
+
+class UtilsFlatSpec extends FlatSpec with Matchers {
+  "Distance" should "be correct levenshtein distance" in {
+    val pairsAndDistances = List(
+      ("book", "back", 2),
+      ("primate", "primitive", 3),
+      ("love", "attraction", 10)
+    )
+    pairsAndDistances.foreach { t =>
+      Utils.distance(t._1, t._2) should be (t._3)
+    }
   }
 }

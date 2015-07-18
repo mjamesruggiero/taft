@@ -3,6 +3,8 @@ package com.mjamesruggiero.taft
 import spray.json._
 import scala.io._
 import DefaultJsonProtocol._
+import java.io.IOException
+
 
 trait Fetcher {
   def fetchBody(url: String, params: Map[String, String]): String
@@ -18,11 +20,16 @@ object AccessToken {
 
 object TwitterAuthorization {
   val keysFile = "/keys.json"
-  def accessSourceTokens = {
-    val stream = getClass.getResourceAsStream(keysFile)
-    val lines = scala.io.Source.fromInputStream( stream ).getLines
-    val text: String = lines.mkString("")
-    text.asJson.convertTo[AccessToken]
+  def accessSourceTokens: Option[AccessToken] = {
+    val resource = getClass.getResourceAsStream(keysFile)
+    val stream = scala.io.Source.fromInputStream(resource)
+    try {
+      val text: String = stream.getLines.mkString("")
+      val tokens = text.asJson.convertTo[AccessToken]
+      Some(tokens)
+    } catch  {
+      case e: IOException => None
+    }
   }
 }
 
@@ -34,19 +41,22 @@ class TweetFetcher extends Fetcher {
 
   def fetchBody(url: String, params: Map[String, String]): String = {
     import TwitterAuthorization._
-    val accessTokens = accessSourceTokens
-    val service = new ServiceBuilder().provider(classOf[TwitterApi]).
-      apiKey(accessTokens.consumerKey).
-      apiSecret(accessTokens.consumerSecret).
-      build()
+    accessSourceTokens match {
+        case Some(accessTokens) => {
+          val service = new ServiceBuilder().provider(classOf[TwitterApi]).
+            apiKey(accessTokens.consumerKey).
+            apiSecret(accessTokens.consumerSecret).
+            build()
 
-    val taftToken = new Token(accessTokens.userKey, accessTokens.userSecret)
-    val request = new OAuthRequest(Verb.GET, url)
-    params.foreach { case (key, value) => request.addQuerystringParameter(key, value) }
-    service.signRequest(taftToken, request)
-    val response = request.send()
-    response.getBody()
-
+          val taftToken = new Token(accessTokens.userKey, accessTokens.userSecret)
+          val request = new OAuthRequest(Verb.GET, url)
+          params.foreach { case (key, value) => request.addQuerystringParameter(key, value) }
+          service.signRequest(taftToken, request)
+          val response = request.send()
+          response.getBody()
+        }
+      case _ => ""
+    }
   }
 }
 

@@ -19,7 +19,7 @@ download () {
 
   if [ ! -f $sbtjar ]; then
     echo 'downloading '$sbtjar 1>&2
-    curl -O http://typesafe.artifactoryonline.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.13.7/$sbtjar
+    curl -O http://dl.bintray.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.13.7/$sbtjar
   fi
 
   test -f $sbtjar || exit 1
